@@ -5,6 +5,13 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
 import styles from './styles.module.css'
 
+/**
+ * criar um arquivo .env local com essas informações:
+ *  REACT_APP_AWS_ACCESS_KEY_ID=AKIAQ3EGUGJLKFBFU3KP
+    REACT_APP_AWS_SECRET_ACCESS_KEY=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
+ * 
+ */
+
 const s3Client = new S3Client({
     region: 'us-east-2',
     credentials: {
