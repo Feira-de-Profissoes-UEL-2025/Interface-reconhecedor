@@ -1,0 +1,177 @@
+/* styles.css */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f0f2f5;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.title {
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+.form {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.label {
+    margin-bottom: 8px;
+    font-size: 1.1em;
+    color: #555;
+    font-weight: 600;
+}
+
+.input {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: border-color 0.3s ease-in-out;
+}
+
+.input:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.cameraSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.cameraButton {
+    background-color: #28a745;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease;
+}
+
+.cameraButton:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+.cameraButton:active {
+    transform: translateY(0);
+}
+
+.videoPlayer {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    background-color: #000;
+}
+
+.captureButton {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease;
+}
+
+.captureButton:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.captureButton:active {
+    transform: translateY(0);
+}
+
+.photoPreview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.capturedImage {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    border: 2px solid #007bff;
+}
+
+.retakeButton {
+    background-color: #ffc107;
+    color: #333;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease;
+}
+
+.retakeButton:hover {
+    background-color: #e0a800;
+    transform: translateY(-2px);
+}
+
+.retakeButton:active {
+    transform: translateY(0);
+}
+
+.submitButton {
+    background-color: #6f42c1;
+    /* Um roxo vibrante */
+    color: white;
+    padding: 15px 30px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 25px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease;
+}
+
+.submitButton:hover {
+    background-color: #5a359b;
+    transform: translateY(-2px);
+}
+
+.submitButton:active {
+    transform: translateY(0);
+}
