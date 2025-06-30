@@ -73,6 +73,7 @@ const FormularioCamera = () => {
         };
     }, [stream]);
 
+
     const iniciarCamera = useCallback(async () => {
         setFotoCapturada(null);
 
@@ -123,7 +124,7 @@ const FormularioCamera = () => {
 
         // Configura os parâmetros para o upload
         const uploadParams = {
-            Bucket: 'feiraprofissaobucket',
+            Bucket: 'bucketfeiraprofissoes',
             Key: fileName,
             Body: arrayBuffer,
             ContentType: 'image/png'
@@ -131,8 +132,8 @@ const FormularioCamera = () => {
 
         try {
             // Envia o comando de upload
-            await s3Client.send(new PutObjectCommand(uploadParams));
-            toast.success("Foto enviada com sucesso para o S3!");
+            await uploadImageCloudinary();
+            toast.success("Foto enviada com sucesso para o cloudinary!");
         } catch (error) {
             console.error("Erro ao fazer upload da foto:", error);
             toast.error("Erro ao fazer upload da foto. Verifique o console.");
@@ -148,7 +149,7 @@ const FormularioCamera = () => {
             videoRef.current.srcObject = null; // Limpa o stream do vídeo
         }
 
-        await fetch('http://localhost:8000/formulario',
+        await fetch('http://localhost:8000/formulario', // Use a relative URL if using a proxy
             {
                 method: 'POST',
                 headers: {
@@ -157,7 +158,7 @@ const FormularioCamera = () => {
                 body: JSON.stringify({
                     nome: nome,
                     cidade: cidade,
-                    idade_real: idade,
+                    idade_real: 12,
                     idade_estimada: 0,
                     usa_oculos: false,
                     bucket_image_url: fileName // Envia o nome do arquivo para o backend
@@ -177,6 +178,22 @@ const FormularioCamera = () => {
             toast.error("Erro ao enviar os dados do formulário. Verifique o console.");
         });
     };
+
+    const uploadImageCloudinary = async () => {
+        const formData = new FormData();
+        formData.append('file', fotoCapturada);
+        formData.append('upload_preset', "feiraProfissoes");
+
+        try {
+            await fetch('https://api.cloudinary.com/v1_1/duzxjunpz/image/upload', {
+                method: 'POST',
+                body: formData
+            })
+        } catch (e) {
+            console.error("Erro ao fazer upload da imagem:", e);
+            toast.error("Erro ao fazer upload da imagem. Verifique o console.");
+        }
+    }
 
     return (
         <div className={styles.container}>
