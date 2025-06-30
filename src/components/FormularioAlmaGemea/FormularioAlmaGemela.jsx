@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+//import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 // Removido: import 'react-toastify/dist/ReactToastify.css';
 
 import styles from './styles.module.css'
@@ -12,7 +12,7 @@ const FormularioCamera = () => {
     const [stream, setStream] = useState(null);
     const [fotoCapturada, setFotoCapturada] = useState(null);
     const [cadastrado, setCadastrado] = useState(false);
-    const [nomeImagem, setNomeImagem] = useState('');
+    //const [nomeImagem, setNomeImagem] = useState('');
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
 
@@ -101,19 +101,19 @@ const FormularioCamera = () => {
 
 
         // Converte a imagem de base64 para um Blob (que a SDK v3 entende)
-        const response = await fetch(fotoCapturada);
-        const arrayBuffer = await response.arrayBuffer();
+        //const response = await fetch(fotoCapturada);
+        //const arrayBuffer = await response.arrayBuffer();
 
         const fileName = `${nome || 'sem-nome'}-${Math.random(1) * 200}.png`;
-        setNomeImagem(fileName);
+        //setNomeImagem(fileName);
 
         // Configura os parâmetros para o upload
-        const uploadParams = {
-            Bucket: 'bucketfeiraprofissoes',
-            Key: fileName,
-            Body: arrayBuffer,
-            ContentType: 'image/png'
-        };
+        // const uploadParams = {
+        //     Bucket: 'bucketfeiraprofissoes',
+        //     Key: fileName,
+        //     Body: arrayBuffer,
+        //     ContentType: 'image/png'
+        // };
 
         try {
             // Envia o comando de upload
@@ -143,10 +143,8 @@ const FormularioCamera = () => {
                 body: JSON.stringify({
                     nome: nome,
                     cidade: cidade,
-                    idade_real: 12,
-                    idade_estimada: 0,
-                    usa_oculos: false,
-                    bucket_image_url: fileName // Envia o nome do arquivo para o backend
+                    idade: parseInt(idade, 10),
+                    bucket_image_url: fileName
                 })
             }
         ).then(response => {
@@ -276,6 +274,7 @@ const FormularioCamera = () => {
                     {/* Ações para encontrar alma gémea/gémeo */}
                     <button className={styles.submitButton}>Encontrar alma gémea</button>
                     <button className={styles.submitButton}>Encontrar gémeo</button>
+                    <button className={styles.submitButton} onClick={() => setCadastrado(false)}>Voltar</button>
                 </div>
             )}
         </div>
