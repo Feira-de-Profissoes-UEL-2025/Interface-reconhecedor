@@ -1,9 +1,11 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
+//import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 // Removido: import 'react-toastify/dist/ReactToastify.css';
 
 import styles from './styles.module.css'
+import BuscarAlmaGemea from './BuscarAlmaGemea';
+import BuscarGemeo from './BuscarGemeo';
 
 const FormularioCamera = () => {
     const [nome, setNome] = useState('');
@@ -12,20 +14,13 @@ const FormularioCamera = () => {
     const [stream, setStream] = useState(null);
     const [fotoCapturada, setFotoCapturada] = useState(null);
     const [cadastrado, setCadastrado] = useState(false);
-    const [nomeImagem, setNomeImagem] = useState('');
+    //const [nomeImagem, setNomeImagem] = useState('');
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
-
-    useEffect(() => {
-        const link = document.createElement('link');
-        link.href = 'https://cdn.jsdelivr.net/npm/react-toastify@11.0.5/dist/ReactToastify.min.css';
-        link.rel = 'stylesheet';
-        document.head.appendChild(link);
-
-        return () => {
-            document.head.removeChild(link);
-        };
-    }, []);
+    //procurar pessoa
+    const [mostrarFormularioAlma, setMostrarFormularioAlma] = useState(false);
+    //procurar Gemeo
+    const [mostrarFormularioGemeo, setMostrarFormularioGemeo] = useState(false);
 
     useEffect(() => {
         const link = document.createElement('link');
@@ -101,19 +96,19 @@ const FormularioCamera = () => {
 
 
         // Converte a imagem de base64 para um Blob (que a SDK v3 entende)
-        const response = await fetch(fotoCapturada);
-        const arrayBuffer = await response.arrayBuffer();
+        //const response = await fetch(fotoCapturada);
+        //const arrayBuffer = await response.arrayBuffer();
 
         const fileName = `${nome || 'sem-nome'}-${Math.random(1) * 200}.png`;
-        setNomeImagem(fileName);
+        //setNomeImagem(fileName);
 
         // Configura os parâmetros para o upload
-        const uploadParams = {
-            Bucket: 'bucketfeiraprofissoes',
-            Key: fileName,
-            Body: arrayBuffer,
-            ContentType: 'image/png'
-        };
+        // const uploadParams = {
+        //     Bucket: 'bucketfeiraprofissoes',
+        //     Key: fileName,
+        //     Body: arrayBuffer,
+        //     ContentType: 'image/png'
+        // };
 
         try {
             // Envia o comando de upload
@@ -143,10 +138,8 @@ const FormularioCamera = () => {
                 body: JSON.stringify({
                     nome: nome,
                     cidade: cidade,
-                    idade_real: 12,
-                    idade_estimada: 0,
-                    usa_oculos: false,
-                    bucket_image_url: fileName // Envia o nome do arquivo para o backend
+                    idade: parseInt(idade, 10),
+                    bucket_image_url: fileName
                 })
             }
         ).then(response => {
@@ -183,9 +176,15 @@ const FormularioCamera = () => {
     return (
         <div className={styles.container}>
             <ToastContainer />
-            {!cadastrado && (
+
+            {mostrarFormularioAlma ? (
+                <BuscarAlmaGemea onVoltar={() => setMostrarFormularioAlma(false)} />
+            ) : mostrarFormularioGemeo ? (
+                <BuscarGemeo onVoltar={() => setMostrarFormularioGemeo(false)} />
+            ) : !cadastrado ? (
                 <form onSubmit={handleSubmit} className={styles.form}>
                     <h2 className={styles.title}>Cadastro de Utilizador</h2>
+
                     <div className={styles.inputGroup}>
                         <label htmlFor="nome" className={styles.label}>Nome:</label>
                         <input
@@ -225,7 +224,7 @@ const FormularioCamera = () => {
                                     toast.warn("Idade não pode ser maior que 120.");
                                     return;
                                 }
-                                setIdade(e.target.value)
+                                setIdade(e.target.value);
                             }}
                             className={styles.input}
                             required
@@ -241,7 +240,6 @@ const FormularioCamera = () => {
 
                         {stream && (
                             <>
-                                {/* O elemento de vídeo para exibir o stream da câmara */}
                                 <video ref={videoRef} autoPlay playsInline className={styles.videoPlayer}></video>
                                 <button type="button" onClick={tirarFoto} className={styles.captureButton}>
                                     Tirar Foto
@@ -258,28 +256,34 @@ const FormularioCamera = () => {
                                 </button>
                             </div>
                         )}
-                        {/* O canvas permanece oculto, usado apenas para capturar a imagem */}
+
                         <canvas ref={canvasRef} className={{ display: 'none' }}></canvas>
                     </div>
 
                     <button type="submit" className={styles.submitButton} onClick={(e) => {
-                        setCadastrado(true)
-                        handleSubmit(e)
+                        setCadastrado(true);
+                        handleSubmit(e);
                     }}>
                         Registar
                     </button>
                 </form>
-            )}
-            {cadastrado && (
+            ) : (
                 <div className={styles.container}>
                     <h2 className={styles.title}>Registo Realizado!</h2>
-                    {/* Ações para encontrar alma gémea/gémeo */}
-                    <button className={styles.submitButton}>Encontrar alma gémea</button>
-                    <button className={styles.submitButton}>Encontrar gémeo</button>
+                    <button className={styles.submitButton} onClick={() => setMostrarFormularioAlma(true)}>
+                        Encontrar alma gémea
+                    </button>
+                    <button className={styles.submitButton} onClick={() => setMostrarFormularioGemeo(true)}>
+                        Encontrar gémeo
+                    </button>
+                    <button className={styles.submitButton} onClick={() => setCadastrado(false)}>Voltar</button>
+
                 </div>
             )}
         </div>
     );
+
+
 };
 
 export default FormularioCamera;

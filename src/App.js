@@ -1,5 +1,5 @@
 import React from 'react';
-import FormularioAlmaGemela from './components/FormularioAlmaGemea/FormularioAlmaGemela';
+import FormularioAlmaGemela from './components/FormularioAlmaGemela';
 
 function App() {
   return (
