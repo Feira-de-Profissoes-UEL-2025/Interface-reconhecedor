@@ -12,6 +12,7 @@ const FormularioCamera = () => {
     const [stream, setStream] = useState(null);
     const [fotoCapturada, setFotoCapturada] = useState(null);
     const [cadastrado, setCadastrado] = useState(false);
+    const [urlImagemCloud, setUrlImagemCloud] = useState(null);
     //const [nomeImagem, setNomeImagem] = useState('');
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
@@ -114,10 +115,10 @@ const FormularioCamera = () => {
         //     Body: arrayBuffer,
         //     ContentType: 'image/png'
         // };
-
+        let urlImagemCloudL = null;
         try {
             // Envia o comando de upload
-            await uploadImageCloudinary();
+            urlImagemCloudL = await uploadImageCloudinary();
             toast.success("Foto enviada com sucesso para o cloudinary!");
         } catch (error) {
             console.error("Erro ao fazer upload da foto:", error);
@@ -144,7 +145,7 @@ const FormularioCamera = () => {
                     nome: nome,
                     cidade: cidade,
                     idade: parseInt(idade, 10),
-                    bucket_image_url: fileName
+                    bucket_image_url: urlImagemCloudL,
                 })
             }
         ).then(response => {
@@ -168,10 +169,15 @@ const FormularioCamera = () => {
         formData.append('upload_preset', "feiraProfissoes");
 
         try {
-            await fetch('https://api.cloudinary.com/v1_1/duzxjunpz/image/upload', {
+            const res = await fetch('https://api.cloudinary.com/v1_1/duzxjunpz/image/upload', {
                 method: 'POST',
                 body: formData
             })
+            const data = await res.json();
+
+            setUrlImagemCloud(data.secure_url);
+            console.log(data)
+            return data.secure_url; // Retorna o ID público da imagem
         } catch (e) {
             console.error("Erro ao fazer upload da imagem:", e);
             toast.error("Erro ao fazer upload da imagem. Verifique o console.");
